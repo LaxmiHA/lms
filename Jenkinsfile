@@ -1,31 +1,63 @@
 pipeline {
     agent any
     environment {
-        // More detail: 
-        // https://jenkins.io/doc/book/pipeline/jenkinsfile/#usernames-and-passwords
-        NEXUS_CRED = credentials('nexus')
+        DOCKER_REGISTRY = 'https://hub.docker.com/repository/docker/claxmih/lms/general'
+        DOCKER_CRED = 'docker-credentials'
+        IMAGE_NAME = 'claxmih/lms'
    }
 
     stages {
-        stage('Build') {
+        stage('Cloning project') {
             steps {
-                echo 'Building..'
-                sh 'cd webapp && npm install && npm run build'
+                echo 'Cloning project..'
+                git 'https://github.com/LaxmiHA/lms.git'
             }
         }
-        stage('Test') {
+        stage('Copy version from package.json') {
             steps {
-                echo 'Testing..'
-                sh 'cd webapp && sudo docker container run --rm -e SONAR_HOST_URL="http://20.172.187.108:9000" -e SONAR_LOGIN="sqp_cae41e62e13793ff17d58483fb6fb82602fe2b48" -v ".:/usr/src" sonarsource/sonar-scanner-cli -Dsonar.projectKey=lms'
+                echo 'Copying version..'
+                script{
+                    def packageJson = readJSON file: 'package.json'
+                    env.VERSION = packageJson.version
+                }
             }
         }
-        stage('Release') {
+        stage('BUILD docker image') {
             steps {
-                echo 'Release Nexus'
-                sh 'rm -rf *.zip'
-                sh 'cd webapp && zip dist-${BUILD_NUMBER}.zip -r dist'
-                sh 'cd webapp && curl -v -u $Username:$Password --upload-file dist-${BUILD_NUMBER}.zip http://20.172.187.108:8081/repository/lms/'
+                echo 'Building an image'
+                script{
+                    docker.build("${env.IMAGE_NAME}:${env.VERSION}")
+                }
             }
         }
+        stage('Push Docker Image'){
+            steps{
+                echo 'Pushing image'
+                script{
+                    docker.withRegistry("${env.DOCKER_REGISTRY}","${env.DOCKER_CRED}")
+                    {
+                        docker.image("${env.IMAGE_NAME}:${env.VERSION}").push()
+                    }
+                }
+            }
+        }
+        stage('Tag latest'){
+            steps{
+                echo 'Tagging latest'
+                script{
+                    docker.withRegistry("${env.DOCKER_REGISTRY}","${env.DOCKER_CRED}")
+                    {
+                        docker.image("${env.IMAGE_NAME}:${env.VERSION}")
+                        image.push('latest')
+                    }
+                }
+            }
+        }
+        post{
+            always{
+                cleanWs()
+            }
+        }
+        
     }
 }
