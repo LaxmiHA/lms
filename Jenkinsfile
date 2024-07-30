@@ -17,7 +17,7 @@ pipeline {
             steps {
                 echo 'Copying version..'
                 script{
-                    def packageJson = readJSON file: 'package.json'
+                    def packageJson = readJSON file: '/api/package.json'
                     env.VERSION = packageJson.version
                 }
             }
