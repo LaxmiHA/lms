@@ -2,7 +2,7 @@ pipeline {
     agent any
     environment {
         DOCKER_REGISTRY = 'https://hub.docker.com/repository/docker/claxmih/lms/general'
-        DOCKER_CRED = 'docker-credentials'
+        DOCKER_CRED = '28716a9a-1996-49aa-9ecb-6aa380f09462'
         IMAGE_NAME = 'claxmih/lms'
    }
 
