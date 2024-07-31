@@ -14,6 +14,11 @@ pipeline {
         stage('Copy version from package.json') {
             steps {
                 echo 'Copying version..'
+                script{
+                    def json = readJSON file: 'lms/api/package.json'
+                    def version = json.version
+                    echo "Version: ${version}"
+                }
             }
         }
         stage('BUILD docker image') {
