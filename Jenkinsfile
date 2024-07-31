@@ -29,7 +29,7 @@ pipeline {
             steps {
                 echo 'Building an image'
                 script{
-                    docker.BUILD("${env.DOCKER_IMAGE}:1.0.0", '-f webapp/Dockerfile .')
+                    sh "docker build -t ${env.DOCKER_IMAGE}:1.0.0 -f webapp/Dockerfile ."
                 }
                 echo 'Buidling success'
             }
