@@ -40,6 +40,7 @@ pipeline {
                         // Build the Docker image
                         sh 'docker build -t $DOCKER_IMAGE .'
                     }
+                }
                 echo 'Buidling success'
             }
         }
