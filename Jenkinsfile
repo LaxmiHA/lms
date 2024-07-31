@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment{
-        DOCKER_IMAGE = 'https://hub.docker.com/repository/docker/claxmih/lms'
+        DOCKER_IMAGE = 'claxmih/lms'
     }
     stages {
         stage('Cloning project') {
@@ -29,7 +29,7 @@ pipeline {
             steps {
                 echo 'Building an image'
                 script{
-                    sh "docker build -t ${env.DOCKER_IMAGE}:1.0.0 -f webapp/Dockerfile ."
+                    sh "docker build -t Claxmih/lms:1.0.0 -f webapp/Dockerfile ."
                 }
                 echo 'Buidling success'
             }
