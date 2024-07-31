@@ -1,7 +1,7 @@
 {
   "name": "api",
-  "version": "1.0.0",
-  "description": "Konamars LMS API",
+  "version": "1.0",
+  "description": "LMS API",
   "main": "index.js",
   "private": "true",
   "scripts": {
