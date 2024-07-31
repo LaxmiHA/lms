@@ -2,6 +2,8 @@ pipeline {
     agent any
     environment{
         DOCKER_IMAGE = 'claxmih/lms'
+        DOCKER_REGISTRY = 'https://hub.docker.com/repository/docker/'
+        REGISTRY_CREDENTIALS_ID = '28716a9a-1996-49aa-9ecb-6aa380f09462'
     }
     stages {
         stage('Cloning project') {
@@ -29,7 +31,8 @@ pipeline {
             steps {
                 echo 'Building an image'
                 script{
-                    sh "docker build -t Claxmih/lms:1.0.0 -f webapp/Dockerfile ."
+                    sh 'docker build -t Claxmih/lms -f webapp/Dockerfile .'
+                    sh 'docker tag $DOCKER_IMAGE $DOCKER_REGISTRY/$DOCKER_IMAGE:$version'
                 }
                 echo 'Buidling success'
             }
