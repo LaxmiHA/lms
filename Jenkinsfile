@@ -30,21 +30,23 @@ pipeline {
         stage('BUILD docker image') {
             steps {
                 echo 'Building an image'
-                script{
-                    sh 'docker build -t Claxmih/lms -f webapp/Dockerfile .'
-                    sh 'docker tag $DOCKER_IMAGE $DOCKER_REGISTRY/$DOCKER_IMAGE:$version'
-                }
+                script {
+                    // Ensure we are in the correct directory
+                    dir('lms/webapp') {
+                        // Check if package.json exists
+                        if (!fileExists('package.json')) {
+                            error 'package.json not found in lms/webapp'
+                        }
+                        // Build the Docker image
+                        sh 'docker build -t $DOCKER_IMAGE .'
+                    }
                 echo 'Buidling success'
             }
         }
         stage('Push Docker Image'){
             steps{
                 echo 'Pushing image'
-            }
-        }
-        stage('Tag latest'){
-            steps{
-                echo 'Tagging latest'
+                
             }
         }
         stage('Clean Up Workspace') {
