@@ -9,6 +9,7 @@ pipeline {
                     git url: 'https://github.com/LaxmiHA/lms.git',
                     branch: 'main'
                 }
+                echo 'cloning completed'
             }
         }
         stage('Copy version from package.json') {
