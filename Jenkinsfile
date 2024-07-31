@@ -5,6 +5,10 @@ pipeline {
         stage('Cloning project') {
             steps {
                 echo 'Cloning project..'
+                script {
+                    git url: 'https://github.com/LaxmiHA/lms.git',
+                    branch: 'main'
+                }
             }
         }
         stage('Copy version from package.json') {
