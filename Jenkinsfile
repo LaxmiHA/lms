@@ -30,9 +30,7 @@ pipeline {
         stage('debug'){
             steps{
                 checkout scm
-                sh 'pwd'
-                sh 'ls -la'
-                sh 'ls -la ../webapp'
+                sh 'ls -l Dockerfile'
             }
         }
         stage('BUILD docker image') {
