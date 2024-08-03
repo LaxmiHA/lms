@@ -27,6 +27,14 @@ pipeline {
                 }
             }
         }
+        stage('debug'){
+            steps{
+                checkout scm
+                sh 'pwd'
+                sh 'ls -la'
+                sh 'ls -la ../webapp'
+            }
+        }
         stage('BUILD docker image') {
             steps {
                 echo 'Building an image'
