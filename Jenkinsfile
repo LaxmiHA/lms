@@ -35,9 +35,9 @@ pipeline {
                         sh 'docker build -t $DOCKER_IMAGE .'
                     }
                 }
-                echo 'Buidling success'
+                echo 'Build success'
             }
-        }
+        
         stage('Push Docker Image'){
             steps{
                 echo 'Pushing image'
@@ -50,5 +50,6 @@ pipeline {
 
             }
         }
+    }
 }
 
