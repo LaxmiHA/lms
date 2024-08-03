@@ -31,12 +31,6 @@ pipeline {
             steps {
                 echo 'Building an image'
                 script {
-                    // Ensure we are in the correct directory
-                    dir('lms/webapp') {
-                        // Check if package.json exists
-                        if (!fileExists('package.json')) {
-                            error 'package.json not found in lms/webapp'
-                        }
                         // Build the Docker image
                         sh 'docker build -t $DOCKER_IMAGE .'
                     }

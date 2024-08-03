@@ -13,11 +13,8 @@ RUN npm install
 # Copy the rest of the project files to the working directory
 COPY . .
 
-# Build the project (if your project requires a build step)
-RUN npm run build
-
 # Expose the port the app runs on
 EXPOSE 3000
 
 # Define the command to run the app
-CMD ["npm", "start"]
+CMD ["npm", "run", "start"]
