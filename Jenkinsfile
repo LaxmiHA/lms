@@ -31,7 +31,7 @@ pipeline {
             steps {
                 echo 'Building an image'
                 script {
-                    dir('lms/webapp'){
+                    dir('../webapp'){
                         // Build the Docker image
                         sh 'docker build -t $DOCKER_IMAGE .'
                     }
