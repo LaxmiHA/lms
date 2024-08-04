@@ -56,8 +56,8 @@ pipeline {
                 echo 'Pushing'
                 script {
                     // Log in to Docker registry
-                    withCredentials([usernamePassword(credentialsId: DOCKER_CREDENTIALS_ID, usernameVariable: 'claxmih', passwordVariable: 'Claxmih@1999')]) {
-                        sh "echo \$DOCKER_PASSWORD | docker login $DOCKER_REGISTRY -u \$DOCKER_USERNAME --password-stdin"
+                    withCredentials([usernamePassword(credentialsId: "${DOCKER_CREDENTIALS_ID}", usernameVariable: 'claxmih', passwordVariable: 'Claxmih@1999')]) {
+                        sh "echo \$DOCKER_PASSWORD | docker login ${DOCKER_REGISTRY} -u \$DOCKER_USERNAME --password-stdin"
                     }
                     
                     // Tag the image (optional, if needed)
