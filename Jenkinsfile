@@ -27,25 +27,25 @@ pipeline {
                 }
             }
         }
-        stage('debug'){
-            steps{
-                checkout scm
-                sh 'ls -l Dockerfile'
+        stage('Build LMS') {
+           steps {
+               echo 'LMS Build Started'
+               sh 'cd webapp && npm install && npm run build'
+               echo 'LMS Build Completed'
+           }
+       }
+
+        stage('Run Docker Script') {
+            steps {
+                script {
+                    // Ensure the script is executable
+                    sh 'chmod +x docker_script.sh'
+                    
+                    // Run the docker_script.sh to build the Docker image
+                    sh './docker_script.sh'
+                }
             }
         }
-        stage('BUILD docker image') {
-            steps {
-                echo 'Building an image'
-                script {
-                    dir('LMS/webapp'){
-                        // Build the Docker image
-                        sh 'docker build -t $DOCKER_IMAGE .'
-                    }
-                }
-                    echo 'Build success'
-                }
-                
-            }
         
         stage('Push Docker Image'){
             steps{
