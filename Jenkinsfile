@@ -51,24 +51,24 @@ pipeline {
             }
         }
         
-        stage('Push Docker Image'){
-            steps{
-                echo 'Pushing image'
+        stage('Push to Docker Registry') {
+            steps {
+                echo 'Pushing'
                 script {
-                    // Docker registry login using a single credentials ID
-                    withCredentials([usernamePassword(credentialsId: '28716a9a-1996-49aa-9ecb-6aa380f09462', usernameVariable: 'claxmih', passwordVariable: 'Claxmi@1999')]) {
-                        sh 'echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin'
+                    // Log in to Docker registry
+                    withCredentials([usernamePassword(credentialsId: DOCKER_CREDENTIALS_ID, usernameVariable: 'claxmih', passwordVariable: 'Claxmih@1999')]) {
+                        sh "echo \$DOCKER_PASSWORD | docker login $DOCKER_REGISTRY -u \$DOCKER_USERNAME --password-stdin"
                     }
                     
-                    // Tag the Docker image
-                    sh 'docker tag claxmih/lms claxmih/lms:${version}'
-                    
-                    // Push the Docker image
-                    sh 'docker push claxmih/lms:${version}'
+                    // Tag the image (optional, if needed)
+                    sh "docker tag ${DOCKER_IMAGE_NAME}/${version}"
+
+                    // Push the image to the Docker registry
+                    sh "docker push ${DOCKER_REGISTRY}/${version}"
+                }
+                echo 'Pushed'
             }
-            echo 'Pushed'
         }
-        
     }
 }
 
