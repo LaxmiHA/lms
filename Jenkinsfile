@@ -66,7 +66,7 @@ pipeline {
                     // Push the image to the Docker registry
                     sh "docker push ${DOCKER_REGISTRY}/${version}"
                 }
-                echo 'Pushed'
+                echo 'Pushed finally'
             }
         }
     }
