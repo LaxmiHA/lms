@@ -5,13 +5,14 @@ pipeline {
         DOCKER_REGISTRY = 'https://hub.docker.com/repository/docker/'
         REGISTRY_CREDENTIALS_ID = '28716a9a-1996-49aa-9ecb-6aa380f09462'
     }
-    stage('Clean Up Workspace') {
+    
+    stages {
+        stage('Clean Up Workspace') {
            steps {
                    echo 'Cleaning Work Space'
 
             }
         }
-    stages {
         stage('Cloning project') {
             steps {
                 echo 'Cloning project..'
