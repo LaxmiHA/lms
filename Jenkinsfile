@@ -27,14 +27,7 @@ pipeline {
                 }
             }
         }
-        stage('Build LMS') {
-           steps {
-               echo 'LMS Build Started'
-               sh 'cd webapp && npm install && npm run build'
-               echo 'LMS Build Completed'
-           }
-       }
-
+        
         stage('Run Docker Script') {
             steps {
                 script {
