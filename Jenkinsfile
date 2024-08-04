@@ -5,6 +5,12 @@ pipeline {
         DOCKER_REGISTRY = 'https://hub.docker.com/repository/docker/'
         REGISTRY_CREDENTIALS_ID = '28716a9a-1996-49aa-9ecb-6aa380f09462'
     }
+    stage('Clean Up Workspace') {
+           steps {
+                   echo 'Cleaning Work Space'
+
+            }
+        }
     stages {
         stage('Cloning project') {
             steps {
@@ -32,10 +38,12 @@ pipeline {
             steps {
                 script {
                     // Ensure the script is executable
+                    dir('./webapp'){
                     sh 'chmod +x docker_script.sh'
                     
                     // Run the docker_script.sh to build the Docker image
                     sh './docker_script.sh'
+                    }
                 }
             }
         }
@@ -46,12 +54,7 @@ pipeline {
                 
             }
         }
-        stage('Clean Up Workspace') {
-           steps {
-                   echo 'Cleaning Work Space'
-
-            }
-        }
+        
     }
 }
 
