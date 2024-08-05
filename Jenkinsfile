@@ -29,9 +29,9 @@ pipeline {
                 echo 'Copying version..'
                 script{
                     def json = readJSON file: 'webapp/package.json'
-                    env.VERSION = json
+                    def version = json.version
+                    env.VERSION = version // Setting it as an environment variable
                     echo "Version: ${env.VERSION}"
-
                 }
             }
         }
@@ -59,7 +59,7 @@ pipeline {
                     withCredentials([usernamePassword(credentialsId: "${DOCKER_CREDENTIALS_ID}", usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
                         sh 'echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin'
                     }
-                    def imageName = "${DOCKER_IMAGE}:${env.VERSION}"
+                    def imageName = "${DOCKER_IMAGE}:${version}"
                     sh "docker tag ${DOCKER_IMAGE} ${DOCKER_REGISTRY}/${imageName}"
                     sh "docker push ${DOCKER_REGISTRY}/${imageName}"
             }
