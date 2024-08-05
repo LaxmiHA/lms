@@ -62,7 +62,7 @@ pipeline {
                     }
                     
                     // Tag the image (optional, if needed)
-                    sh "docker tag ${DOCKER_IMAGE_NAME}/${version}"
+                    sh "docker tag ${DOCKER_IMAGE}/${version}"
 
                     // Push the image to the Docker registry
                     sh "docker push ${DOCKER_REGISTRY}/${version}"
@@ -73,7 +73,7 @@ pipeline {
         stage('Deploy Image') {
             steps {
                 script {
-                    def imageName = "${DOCKER_IMAGE_NAME}:${version}"
+                    def imageName = "${DOCKER_IMAGE}:${version}"
                     sh "docker run -d -p 3000:3000 ${DOCKER_REGISTRY}/${imageName}"
                 }
             }
