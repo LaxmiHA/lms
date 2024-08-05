@@ -56,8 +56,9 @@ pipeline {
                 echo 'Pushing'
                 script {
                     // Log in to Docker registry
-                    withCredentials([usernamePassword(credentialsId: "${DOCKER_CREDENTIALS_ID}", usernameVariable: 'claxmih', passwordVariable: 'Claxmih@1999')]) {
-                        sh "echo \$DOCKER_PASSWORD | docker login ${DOCKER_REGISTRY} -u \$DOCKER_USERNAME --password-stdin"
+                    
+                    withCredentials([usernamePassword(credentialsId: "${DOCKER_CREDENTIALS_ID}", usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                        sh 'echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin'
                     }
                     
                     // Tag the image (optional, if needed)
@@ -67,6 +68,14 @@ pipeline {
                     sh "docker push ${DOCKER_REGISTRY}/${version}"
                 }
                 echo 'Pushed finally'
+            }
+        }
+        stage('Deploy Image') {
+            steps {
+                script {
+                    def imageName = "${DOCKER_IMAGE_NAME}:${version}"
+                    sh "docker run -d -p 3000:3000 ${DOCKER_REGISTRY}/${imageName}"
+                }
             }
         }
     }
