@@ -29,7 +29,7 @@ pipeline {
                 echo 'Copying version..'
                 script{
                     def json = readJSON file: 'webapp/package.json'
-                    env.VERSION = version
+                    env.VERSION = json
                     echo "Version: ${env.VERSION}"
 
                 }
