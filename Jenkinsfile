@@ -66,6 +66,14 @@ pipeline {
             echo 'Pushed finally'
         }
         }
+        stage('Deploy Image') {
+            steps {
+                script {
+                    sh "docker run -d -p 3000:3000 ${DOCKER_REGISTRY}/${imageName}"
+                }
+                echo "Image is now deployed"
+            }
+        }
         
     }
 }
