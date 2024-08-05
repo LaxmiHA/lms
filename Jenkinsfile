@@ -58,7 +58,7 @@ pipeline {
                     // Log in to Docker registry
                     
                     withCredentials([usernamePassword(credentialsId: "${DOCKER_CREDENTIALS_ID}", usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                        sh 'echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin'
+                        sh 'echo "Avmi@2024love" | docker login -u claxmih --password-stdin'
                     }
                     
                     // Tag the image (optional, if needed)
