@@ -31,6 +31,7 @@ pipeline {
                     def json = readJSON file: 'webapp/package.json'
                     def version = json.version
                     env.VERSION = version // Setting it as an environment variable
+                    env.IMAGE_NAME = "${DOCKER_IMAGE}:${version}"
                     echo "Version: ${env.VERSION}"
                 }
             }
@@ -59,9 +60,8 @@ pipeline {
                     withCredentials([usernamePassword(credentialsId: "${DOCKER_CREDENTIALS_ID}", usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
                         sh 'echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin'
                     }
-                    def imageName = "${DOCKER_IMAGE}:${version}"
-                    sh "docker tag ${DOCKER_IMAGE} ${DOCKER_REGISTRY}/${imageName}"
-                    sh "docker push ${DOCKER_REGISTRY}/${imageName}"
+                    sh "docker tag ${DOCKER_IMAGE} ${DOCKER_REGISTRY}/${env.IMAGE_NAME}"
+                    sh "docker push ${DOCKER_REGISTRY}/${env.IMAGE_NAME}"
             }
             echo 'Pushed finally'
         }
@@ -69,7 +69,8 @@ pipeline {
         stage('Deploy Image') {
             steps {
                 script {
-                    sh "docker run -d -p 3000:3000 ${DOCKER_REGISTRY}/${imageName}"
+
+                    sh "docker run -d -p 3000:3000 ${DOCKER_REGISTRY}/${env.IMAGE_NAME}"
                 }
                 echo "Image is now deployed"
             }
