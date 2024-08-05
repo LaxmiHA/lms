@@ -2,7 +2,7 @@ pipeline {
     agent any
     environment{
         DOCKER_IMAGE = 'claxmih/lms'
-        DOCKER_REGISTRY = 'https://hub.docker.com/'
+        DOCKER_REGISTRY = 'docker.io'
         DOCKER_CREDENTIALS_ID = '28716a9a-1996-49aa-9ecb-6aa380f09462'
     }
     
