@@ -7,12 +7,6 @@ pipeline {
     }
     
     stages {
-        stage('Clean Up Workspace') {
-           steps {
-                   echo 'Cleaning Work Space'
-
-            }
-        }
         stage('Cloning project') {
             steps {
                 echo 'Cloning project..'
@@ -43,9 +37,6 @@ pipeline {
                     // Ensure the script is executable
                     dir('./webapp'){
                     sh 'chmod +x docker_script.sh'
-                    // Verify the script is executable
-                    //    sh 'ls -la docker_script.sh'
-                    
                     // Run the docker_script.sh to build the Docker image
                     sh './docker_script.sh'
                     }
